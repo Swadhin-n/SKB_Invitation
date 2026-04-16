@@ -107,7 +107,7 @@ export default function FingerprintScanner({ className, onVerified }: Props) {
               ? "BIOMETRIC SYNC IN PROGRESS"
               : "PLACE THUMB TO INITIATE BIOMETRIC LINK"}
         </div>
-        <div className="hint">NEO‑CELESTIAL AUTH GATE</div>
+        <div className="hint">Sankalp Bharat AUTH GATE</div>
       </div>
 
       <style jsx>{`
