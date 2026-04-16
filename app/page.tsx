@@ -24,6 +24,7 @@ declare module "react" {
 export default function Page() {
   const [showLanding, setShowLanding] = useState(true);
   const [launching, setLaunching] = useState(false);
+  const [showLaunchVideo, setShowLaunchVideo] = useState(false);
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState(0);
   const [revealed, setRevealed] = useState(false);
@@ -31,26 +32,57 @@ export default function Page() {
   const [biometricVerified, setBiometricVerified] = useState(false);
   const captureRef = useRef<HTMLDivElement>(null);
   const sigRef = useRef<SignatureCanvasHandle>(null);
-  const shipRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  const finishLaunchVideo = useCallback(() => {
+    setShowLaunchVideo(false);
+    setShowLanding(false);
+    videoRef.current?.pause();
+    window.setTimeout(() => setShipArriving(true), 500);
+  }, []);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(min-width: 1024px)");
+
+    const updateLayout = () => {
+      if (mediaQuery.matches) {
+        setShowLanding(false);
+      }
+    };
+
+    updateLayout();
+    mediaQuery.addEventListener("change", updateLayout);
+
+    return () => mediaQuery.removeEventListener("change", updateLayout);
+  }, []);
 
   const handleLaunch = () => {
     if (launching) return;
     setLaunching(true);
-    const node = shipRef.current;
-    const onEnd = () => {
-      setShowLanding(false);
-      // Start ship arrival as soon as letter page loads
-      window.setTimeout(() => setShipArriving(true), 500);
-      node?.removeEventListener("animationend", onEnd);
-    };
-    node?.addEventListener("animationend", onEnd);
-    // Fallback in case the animationend does not fire (3.5s animation + buffer)
-    window.setTimeout(() => {
-      node?.removeEventListener("animationend", onEnd);
-      setShowLanding(false);
-      window.setTimeout(() => setShipArriving(true), 500);
-    }, 4000);
+    setShowLaunchVideo(true);
   };
+
+  useEffect(() => {
+    if (!showLaunchVideo) return;
+
+    const video = videoRef.current;
+    if (!video) return;
+
+    video.currentTime = 0;
+    video.play().catch(() => {
+      // Playback can still begin on a subsequent tap if the browser blocks autoplay.
+    });
+
+    const timer = window.setTimeout(() => {
+      finishLaunchVideo();
+    }, 4000);
+
+    return () => window.clearTimeout(timer);
+  }, [finishLaunchVideo, showLaunchVideo]);
+
+  useEffect(() => {
+    videoRef.current?.load();
+  }, []);
 
   useEffect(() => {
     const existingScript = document.querySelector(
@@ -107,9 +139,9 @@ export default function Page() {
         }}
       >
         <style>{`
-          @media (min-width: 768px) and (max-width: 1023px) {
+          @media (max-width: 1023px) {
             .landing-bg {
-              background-image: url('/ipad.webp') !important;
+              background-image: url('/images/bg1.webp') !important;
             }
           }
           @media (min-width: 1024px) {
@@ -119,44 +151,44 @@ export default function Page() {
           }
         `}</style>
 
+        {showLaunchVideo && (
+          <div className="absolute inset-0 z-30 bg-black">
+            <video
+              ref={videoRef}
+              className="h-full w-full object-cover"
+              src="/invitebg_video.webm"
+              autoPlay
+              muted
+              playsInline
+              preload="auto"
+              onEnded={finishLaunchVideo}
+            />
+          </div>
+        )}
+
        
 
-        {/* Launch Button & Text */}
-        <div className="relative z-20 flex min-h-screen flex-col items-center justify-end pb-16 sm:pb-24 pointer-events-auto px-4 sm:px-6 text-center">
-          {/* Floating Text Instructions */}
+        {/* Envelope Trigger */}
+        <div className="fixed inset-x-0 bottom-0 z-20 flex flex-col items-center pb-6 sm:pb-10 pointer-events-auto px-4 sm:px-6 text-center">
           <div
             className={cn(
               "mb-4 sm:mb-6 transition-opacity duration-300",
               launching ? "opacity-0" : "opacity-100 animate-bounce",
             )}
           >
-            <p className="text-white font-bold text-lg sm:text-base md:text-xl tracking-[0.2em] drop-shadow-[0_4px_4px_rgba(0,0,0,1)]">
-              Click to Unveil!
+            <p className="text-white font-bold text-lg sm:text-base md:text-xl tracking-[0.16em] drop-shadow-[0_4px_4px_rgba(0,0,0,1)]">
+              Tap the Envelope to Unveil
             </p>
           </div>
 
-          {/* Image Button */}
-          <button
-            onClick={handleLaunch}
-            disabled={launching}
+          <div
             className={cn(
-              "relative group transition-all duration-500 ease-in-out transform",
-              "hover:scale-110 active:scale-95",
-              launching && "scale-0 opacity-0 rotate-180",
+              "w-full max-w-md sm:max-w-xl transition-all duration-500 ease-in-out",
+              launching && "scale-95 opacity-0",
             )}
-            aria-label="Launch Spaceship"
           >
-            <div className="absolute inset-0 bg-indigo-500/30 blur-[40px] rounded-full group-hover:bg-indigo-400/50 transition-colors duration-500" />
-
-            <Image
-              src="/images/launch_button.webp"
-              alt="Launch Button"
-              width={200}
-              height={200}
-              className="relative w-20 h-20 sm:w-28 sm:h-28 md:w-36 md:h-36 object-contain drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]"
-              priority
-            />
-          </button>
+            <JungleLetter onReveal={handleLaunch} />
+          </div>
         </div>
 
         <style jsx>{`
@@ -328,10 +360,10 @@ export default function Page() {
                 <div className="text-center space-y-6 animate-in fade-in rounded-2xl border border-white/30 bg-white/5 backdrop-blur-2xl shadow-[0_0_50px_rgba(255,255,255,0.1),inset_0_1px_0_rgba(255,255,255,0.1)] p-6 sm:p-8">
                   <div className="space-y-4">
                     <h2
-                      className="text-2xl font-bold text-[color:var(--highlight)]"
+                      className="text-2xl text-yellow-600 font-bold text-[color:var(--highlight)]"
                       style={{ letterSpacing: "2px" }}
                     >
-                      WELCOME, INNOVATOR!
+                      WELCOME, DELEGATES!
                     </h2>
                     <p
                       className="text-base text-black"
@@ -345,7 +377,7 @@ export default function Page() {
                   </div>
                   <Button
                     onClick={handleReveal}
-                    className="bg-gradient-to-r from-green-500 via-blue-500 to-orange-500 
+                    className="bg-gradient-to-r from-yellow-400 to-yellow-600
 hover:scale-105 transition-all duration-300 text-white font-bold px-8 py-3 rounded-xl shadow-lg hover:scale-105 transition-transform"
                   >
                     Proceed to Invitation
@@ -422,19 +454,19 @@ hover:scale-105 transition-all duration-300 text-white font-bold px-8 py-3 round
                     <span className="viaoda font-semibold text-yellow-500">
                       Date :
                     </span>{" "}
-                    17th & 18th April 2026
+                    Friday, 17th April 2026
                   </p>
                   <p>
                     <span className="viaoda font-semibold text-yellow-500">
                       Time :
                     </span>{" "}
-                    9:30 AM onwards
+                    10:00 AM onwards
                   </p>
                   <p>
                     <span className="viaoda font-semibold text-yellow-500">
                       Venue :
                     </span>{" "}
-                    Multi-Facility Centre, St. Vincent Pallotti College of
+                    B - Block, 2nd Floor Auditorium, St. Vincent Pallotti College of
                     Engineering and Technology, Gavsi Manapur, Nagpur
                   </p>
                 </div>
