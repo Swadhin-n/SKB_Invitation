@@ -40,21 +40,21 @@ export default function Page() {
     const onEnd = () => {
       setShowLanding(false);
       // Start ship arrival as soon as letter page loads
-      window.setTimeout(() => setShipArriving(true), 500)
-      node?.removeEventListener("animationend", onEnd)
-    }
-    node?.addEventListener("animationend", onEnd)
+      window.setTimeout(() => setShipArriving(true), 500);
+      node?.removeEventListener("animationend", onEnd);
+    };
+    node?.addEventListener("animationend", onEnd);
     // Fallback in case the animationend does not fire (3.5s animation + buffer)
     window.setTimeout(() => {
-      node?.removeEventListener("animationend", onEnd)
-      setShowLanding(false)
-      window.setTimeout(() => setShipArriving(true), 500)
-    }, 4000)
-  }
+      node?.removeEventListener("animationend", onEnd);
+      setShowLanding(false);
+      window.setTimeout(() => setShipArriving(true), 500);
+    }, 4000);
+  };
 
   useEffect(() => {
     const existingScript = document.querySelector(
-      'script[src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js"]'
+      'script[src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js"]',
     );
     if (existingScript) return;
     const script = document.createElement("script");
@@ -89,20 +89,23 @@ export default function Page() {
       description: "Your invitation has been securely stored.",
       // Keep it subtle and on-theme
       duration: 5000,
-    })
+    });
   }, []);
 
   const handleClear = () => sigRef.current?.clear();
 
   if (showLanding) {
     return (
-      <div className="landing-bg fixed inset-0 w-screen h-screen overflow-hidden" style={{
-        backgroundImage: "url('/phone_bg.webp')",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-        backgroundColor: "#000"
-      }}>
+      <div
+        className="landing-bg fixed inset-0 w-screen h-screen overflow-hidden"
+        style={{
+          backgroundImage: "url('/phone_bg.webp')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+          backgroundColor: "#000",
+        }}
+      >
         <style>{`
           @media (min-width: 768px) and (max-width: 1023px) {
             .landing-bg {
@@ -111,21 +114,23 @@ export default function Page() {
           }
           @media (min-width: 1024px) {
             .landing-bg {
-              background-image: url('/%20desktop_bg.webp') !important;
+              background-image: url('/images/bg1.webp') !important;
             }
           }
         `}</style>
 
-
         {/* Spaceship - Center of Screen */}
-        <div className="fixed inset-0 z-20 flex items-center justify-center pointer-events-none px-4 sm:px-6" style={{ paddingBottom: "30px" }}>
+        <div
+          className="fixed inset-0 z-20 flex items-center justify-center pointer-events-none px-4 sm:px-6"
+          style={{ paddingBottom: "30px" }}
+        >
           <div className="relative flex items-center justify-center">
             <div className="w-48 sm:w-64 md:w-80 lg:w-96 h-auto">
               <div
                 ref={shipRef}
                 className={cn(
                   "ship-anim-wrapper",
-                  launching && "ship-launch-animation"
+                  launching && "ship-launch-animation",
                 )}
                 style={{ width: "100%" }}
               >
@@ -148,16 +153,14 @@ export default function Page() {
             </div>
           </div>
         </div>
-     
 
-     {/* Launch Button & Text */}
+        {/* Launch Button & Text */}
         <div className="relative z-20 flex min-h-screen flex-col items-center justify-end pb-16 sm:pb-24 pointer-events-auto px-4 sm:px-6 text-center">
-          
           {/* Floating Text Instructions */}
           <div
             className={cn(
               "mb-4 sm:mb-6 transition-opacity duration-300",
-              launching ? "opacity-0" : "opacity-100 animate-bounce"
+              launching ? "opacity-0" : "opacity-100 animate-bounce",
             )}
           >
             <p className="text-white font-bold text-sm sm:text-base md:text-lg tracking-[0.2em] drop-shadow-[0_4px_4px_rgba(0,0,0,1)]">
@@ -172,12 +175,12 @@ export default function Page() {
             className={cn(
               "relative group transition-all duration-500 ease-in-out transform",
               "hover:scale-110 active:scale-95",
-              launching && "scale-0 opacity-0 rotate-180"
+              launching && "scale-0 opacity-0 rotate-180",
             )}
             aria-label="Launch Spaceship"
           >
             <div className="absolute inset-0 bg-indigo-500/30 blur-[40px] rounded-full group-hover:bg-indigo-400/50 transition-colors duration-500" />
-            
+
             <Image
               src="/images/launch_button.webp"
               alt="Launch Button"
@@ -188,8 +191,7 @@ export default function Page() {
             />
           </button>
         </div>
-  
-         
+
         <style jsx>{`
           @keyframes float-slow {
             0%,
@@ -279,34 +281,34 @@ export default function Page() {
 
   return (
     <main
-      ref={captureRef}
-      style={
-        {
-          "--background": "#0b0b0b",
-          "--foreground": "#e8e8e8",
-          "--primary": "#e0aa3e",
-          "--secondary": "#23144792",
-          "--accent": "#281e58ff",
-          "--parchment": "#efe3c4",
-          // Background for the *revealed* invitation content
-          backgroundImage: "url('/images/invitebg.webp')",
-        } as React.CSSProperties
-      }
-      className="min-h-dvh w-full overflow-x-hidden text-[color:var(--foreground)] bg-fixed bg-cover bg-center bg-no-repeat animate-in fade-in"
-    >
-      {/* NEW: Full visibility background container for the envelope/scanner section. */}
-      {!revealed && (
-        <div 
-          className="fixed inset-0 min-h-dvh w-full bg-cover bg-center bg-no-repeat animate-in fade-in"
-          style={{
-            backgroundImage: "url('/images/invitebg_landscape.webp')", 
-            zIndex: 0, 
-          }}
-        >
-          {/* Translucent overlay REMOVED to ensure the background is fully visible */}
-        </div>
-      )}
+     
+  ref={captureRef}
+  style={
+    {
+      "--background": "#0b0b0b",
+      "--foreground": "#e8e8e8",
+      "--primary": "#4caf50",
+      "--secondary": "#0f172a99",
+      "--accent": "#1e5fa8",
+      "--highlight": "#f7931e",
+      "--parchment": "#efe3c4",
+    } as React.CSSProperties
+  }
+  className="min-h-dvh w-full overflow-x-hidden text-[color:var(--foreground)] bg-cover bg-center bg-no-repeat animate-in fade-in"
+>
+  {/* ✅ ONLY ONE BACKGROUND */}
+  <div className="fixed inset-0 -z-10">
+    <Image
+      src="/images/bg2.webp"
+      alt="background"
+      fill
+      sizes="100vw"
+      quality={80}
+      className="object-cover object-center"
+    />
+  </div>
 
+  {/* rest of your code continues */}
 
       {/* Spaceship arriving on envelope page only (z-index 10, visible over the new background) */}
       {!revealed && shipArriving && (
@@ -343,15 +345,14 @@ export default function Page() {
         </div>
       )}
 
-
       {/* Content Container - Centered (z-index 20) */}
       <div className="relative z-20 min-h-dvh w-full flex flex-col items-center justify-center px-4 sm:px-6 py-8 sm:py-12">
         {loading && (
           <div className="fixed inset-0 z-50 grid place-items-center bg-black/90 backdrop-blur-md animate-in fade-in">
             <div className="flex flex-col items-center gap-4 sm:gap-6">
               <Image
-                src="/images/Technex_26_name.webp"
-                alt="TECHNEX 2K25"
+                src="/images/sb_name.webp"
+                alt="Sankalp Bharat 2K26"
                 width={400}
                 height={300}
                 className="h-auto w-48  sm:w-64 md:w-80 object-contain animate-pulse"
@@ -380,7 +381,7 @@ export default function Page() {
             {/* Mobile & Tablet (including iPads): show fingerprint scanner */}
             <div className="xl:hidden w-full max-w-md px-6">
               {!biometricVerified ? (
-                // NOTE: The background of this specific component (bg-[color:var(--secondary)]/75) 
+                // NOTE: The background of this specific component (bg-[color:var(--secondary)]/75)
                 // remains translucent, allowing the new full background to show through.
                 <div className="space-y-6 rounded-2xl border border-[color:var(--primary)]/40 bg-[color:var(--secondary)]/75 backdrop-blur-sm p-6 sm:p-8">
                   <FingerprintScanner
@@ -395,28 +396,22 @@ export default function Page() {
                       className="text-2xl font-bold"
                       style={{ color: "#d3a826ff", letterSpacing: "2px" }}
                     >
-                      WELCOME, EXPLORER
+                      WELCOME, INNOVATOR!
                     </h2>
                     <p
                       className="text-sm"
                       style={{ color: "#d6d9ff", lineHeight: "1.6" }}
                     >
                       Your identity has been successfully verified.
-                      <br/>
-                      You are now authorized to enter the{" "}
-                      <strong>Neo‑Celestia Network</strong>.
-                    </p>
-                    <p
-                      className="text-xs"
-                      style={{ color: "#aeb6ff", marginTop: "12px" }}
-                    >
-                      May your journey be guided by innovation, curiosity, and
-                      cosmic excellence.
+                      <br />
+                      You are now authorized to enter{" "}
+                      <strong>Sankalp Bharat 2K26</strong>.
                     </p>
                   </div>
                   <Button
                     onClick={handleReveal}
-                    className="bg-gradient-to-r from-yellow-600 via-yellow-800 to-yellow-600 text-white font-bold px-8 py-3 rounded-xl shadow-lg hover:scale-105 transition-transform"
+                    className="bg-gradient-to-r from-green-500 via-blue-500 to-orange-500 
+hover:scale-105 transition-all duration-300 text-white font-bold px-8 py-3 rounded-xl shadow-lg hover:scale-105 transition-transform"
                   >
                     Proceed to Invitation
                   </Button>
@@ -430,7 +425,7 @@ export default function Page() {
           <div className="w-full max-w-3xl space-y-6 sm:space-y-8">
             <section
               className={cn(
-                "relative rounded-2xl border border-[color:var(--primary)]/40 bg-[color:var(--secondary)]/50 p-4 sm:p-6 md:p-10 backdrop-blur-sm animate-in fade-in overflow-hidden"
+                "relative rounded-2xl border border-[color:var(--primary)]/40 bg-white/10 backdrop-blur-xl border border-white/20 shadow-[0_0_30px_rgba(0,0,0,0.3)] p-4 sm:p-6 md:p-10 backdrop-blur-sm animate-in fade-in overflow-hidden",
               )}
               aria-label="Invitation details"
             >
@@ -444,70 +439,81 @@ export default function Page() {
                   priority
                 />
 
-                <p className="text-center text-sm sm:text-base md:text-lg">
+                <p className="viaoda text-center text-sm sm:text-base md:text-lg">
                   Cordially invites you to
                 </p>
+                <div className="flex flex-col items-center justify-center gap-3">
+  <div className="p-3 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20">
+    <Image
+      src="/images/sb_logo.webp"
+      alt="Logo"
+      width={200}
+      height={200}
+      className="object-contain"
+    />
+  </div>
 
-                <div className="flex justify-center">
-                  <Image
-                    src="/images/Technex_26_name.webp"
-                    alt="TECHNEX 2K25"
-                    width={3000}
-                    height={700}
-                    className="h-auto w-full max-w-sm sm:max-w-md md:max-w-lg object-contain"
-                    priority
-                  />
-                </div>
+  <Image
+    src="/images/sb_name.webp"
+    alt="Name"
+    width={400}
+    height={120}
+    className="object-contain drop-shadow-[0_5px_20px_rgba(0,0,0,0.5)]"
+  />
+</div>
 
-                <h3 className="text-center text-base sm:text-lg md:text-2xl font-bold text-[color:var(--foreground)]">
-                  A National-Level Technical Fest
+                <h3 className="viaoda text-center text-base sm:text-lg md:text-2xl font-bold text-[color:var(--foreground)]">
+                  A National-Level Hackathon
                 </h3>
 
-                <p className="text-center text-xs sm:text-sm md:text-base leading-relaxed">
-                  A distinguished event celebrating innovation, technological
-                  excellence, and intellectual leadership empowering technical
-                  minds and bringing together academia, industry, and young
-                  innovators
+                <h2 className="viaoda text-center text-base sm:text-lg md:text-2xl font-bold text-[color:var(--foreground)]">
+                  Innovating Sustainable Solutions For A Viksit Bharat
+                </h2>
+
+                <p className="viaoda text-center text-xs sm:text-sm md:text-base leading-relaxed">
+                  You are warmly invited to join Sankalp Bharat 2K26, a
+                  student-led hackathon focused on sustainable and impactful
+                  innovation.
                 </p>
-                <p className="text-center text-xs sm:text-sm md:text-base leading-relaxed">
-                  We are honored to invite you to grace TECHNEX 2025–26, a
-                  two-day technical event featuring expert sessions, workshops,
-                  competitions, and exhibitions that foster collaboration,
-                  creativity, and emerging technologies.
+                <p className="viaoda text-center text-xs sm:text-sm md:text-base leading-relaxed">
+                  Organized by the Department of Computer Science and
+                  Engineering, Computer Society of India, and Zenith Forum at
+                  St. Vincent Pallotti College of Engineering & Technology,
+                  Nagpur.
                 </p>
 
-                <div className="grid gap-1 sm:gap-2 text-center text-xs sm:text-sm md:text-base">
+                <div className="viaoda grid gap-1 sm:gap-2 text-center text-xs sm:text-sm md:text-base">
                   <p>
-                    <span className="font-semibold text-[color:var(--primary)]">
+                    <span className="viaoda font-semibold text-[color:var(--primary)]">
                       Date :
                     </span>{" "}
-                    18th & 19th December 2025
+                    17th & 18th April 2026
                   </p>
                   <p>
-                     <span className="font-semibold text-[color:var(--primary)]">
+                    <span className="viaoda font-semibold text-[color:var(--primary)]">
                       Time :
                     </span>{" "}
                     9:30 AM onwards
                   </p>
                   <p>
-                    <span className="font-semibold text-[color:var(--primary)]">
+                    <span className="viaoda font-semibold text-[color:var(--primary)]">
                       Venue :
                     </span>{" "}
-                    Multi-Facility Centre, St. Vincent Pallotti College of Engineering and Technology,
-                    Gavsi Manapur, Nagpur
+                    Multi-Facility Centre, St. Vincent Pallotti College of
+                    Engineering and Technology, Gavsi Manapur, Nagpur
                   </p>
                 </div>
 
-                <p className="text-center text-xs sm:text-sm md:text-base leading-relaxed">
-                  Your presence will greatly enrich TECHNEX 2025–26.
-                <br></br>
+                <p className="viaoda text-center text-xs sm:text-sm md:text-base leading-relaxed">
+                  Your presence will greatly enrich Sankalp Bharat 2K26.
+                  <br></br>
                   We look forward to welcoming you.
                 </p>
               </div>
             </section>
 
-            <section className="rounded-2xl border border-[color:var(--primary)]/40 bg-[color:var(--secondary)]/50 p-4 sm:p-6 md:p-10 backdrop-blur-sm">
-              <h4 className="mb-3 sm:mb-4 text-center text-sm sm:text-base md:text-lg font-semibold text-[color:var(--primary)]">
+            <section className="rounded-2xl border border-[color:var(--primary)]/40 bg-white/10 backdrop-blur-xl border border-white/20 shadow-[0_0_30px_rgba(0,0,0,0.3)] p-4 sm:p-6 md:p-10 backdrop-blur-sm">
+              <h4 className="viaoda mb-3 sm:mb-4 text-center text-sm sm:text-base md:text-lg font-semibold text-[color:var(--primary)]">
                 Sign Your Presence
               </h4>
               {/* Mobile & iPad (tablets): show signature canvas */}
@@ -518,7 +524,7 @@ export default function Page() {
                   strokeColor="#ffffff"
                   strokeWidth={0.7}
                 />
-                <div className="mt-3 sm:mt-4 flex flex-wrap items-center justify-center gap-2 sm:gap-3">
+                <div className="viaoda mt-3 sm:mt-4 flex flex-wrap items-center justify-center gap-2 sm:gap-3">
                   <Button
                     onClick={handleDownload}
                     className="bg-[color:var(--primary)] text-[color:var(--background)] hover:opacity-90 transition text-xs sm:text-sm"
@@ -530,7 +536,7 @@ export default function Page() {
                     onClick={handleClear}
                     className="bg-[color:var(--accent)] text-[oklch(0.98_0_0)] transition text-xs sm:text-sm"
                   >
-                    Clear signatures
+                    Clear Signatures
                   </Button>
                 </div>
               </div>
@@ -542,7 +548,7 @@ export default function Page() {
                   strokeColor="#ffffff"
                   strokeWidth={0.7}
                 />
-                <div className="mt-3 sm:mt-4 flex flex-wrap items-center justify-center gap-2 sm:gap-3">
+                <div className="viaoda mt-3 sm:mt-4 flex flex-wrap items-center justify-center gap-2 sm:gap-3">
                   <Button
                     onClick={handleDownload}
                     className="bg-[color:var(--primary)] text-[color:var(--background)] hover:opacity-90 transition text-xs sm:text-sm"
@@ -560,9 +566,10 @@ export default function Page() {
               </div>
             </section>
 
-            <footer className="text-center text-xs sm:text-sm">
-              Crafted for TECHNEX 2K25 — Let the Cosmos align!<br></br>
-                © Technex 25-26. Made by team - Nikita & Swadhin.
+            <footer className="viaoda text-center text-xs sm:text-sm">
+              Crafted for Sankalp Bharat 2K26 — Innovating Solutions for a
+              Viksit Bharat<br></br>© Sankalp Bharat 2k26. Made by team - Nikita
+              & Swadhin.
             </footer>
           </div>
         )}

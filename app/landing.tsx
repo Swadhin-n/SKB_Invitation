@@ -33,7 +33,7 @@ export default function Landing() {
           {/* Main Content */}
           <div className="space-y-6">
             <h1 className="text-4xl font-bold md:text-6xl">
-              Welcome to Technex
+              Welcome to Sankalp Bharat 2k26!
             </h1>
             
             <p className="text-lg md:text-xl opacity-90">
