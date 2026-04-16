@@ -119,40 +119,7 @@ export default function Page() {
           }
         `}</style>
 
-        {/* Spaceship - Center of Screen */}
-        <div
-          className="fixed inset-0 z-20 flex items-center justify-center pointer-events-none px-4 sm:px-6"
-          style={{ paddingBottom: "30px" }}
-        >
-          <div className="relative flex items-center justify-center">
-            <div className="w-48 sm:w-64 md:w-80 lg:w-96 h-auto">
-              <div
-                ref={shipRef}
-                className={cn(
-                  "ship-anim-wrapper",
-                  launching && "ship-launch-animation",
-                )}
-                style={{ width: "100%" }}
-              >
-                <model-viewer
-                  src="/spaceship.glb"
-                  autoplay
-                  exposure="1.1"
-                  shadow-intensity="0.7"
-                  loading="lazy"
-                  camera-orbit="270deg 60deg 110%"
-                  interaction-prompt="none"
-                  interaction-prompt-threshold="0"
-                  className="w-full h-auto"
-                  style={{
-                    filter: "saturate(1.1)",
-                    minHeight: "280px",
-                  }}
-                />
-              </div>
-            </div>
-          </div>
-        </div>
+       
 
         {/* Launch Button & Text */}
         <div className="relative z-20 flex min-h-screen flex-col items-center justify-end pb-16 sm:pb-24 pointer-events-auto px-4 sm:px-6 text-center">
@@ -163,8 +130,8 @@ export default function Page() {
               launching ? "opacity-0" : "opacity-100 animate-bounce",
             )}
           >
-            <p className="text-white font-bold text-sm sm:text-base md:text-lg tracking-[0.2em] drop-shadow-[0_4px_4px_rgba(0,0,0,1)]">
-              Tap to launch!
+            <p className="text-white font-bold text-lg sm:text-base md:text-xl tracking-[0.2em] drop-shadow-[0_4px_4px_rgba(0,0,0,1)]">
+              Click to Unveil!
             </p>
           </div>
 
@@ -285,13 +252,13 @@ export default function Page() {
   ref={captureRef}
   style={
     {
-      "--background": "#0b0b0b",
-      "--foreground": "#e8e8e8",
-      "--primary": "#4caf50",
-      "--secondary": "#0f172a99",
-      "--accent": "#1e5fa8",
-      "--highlight": "#f7931e",
-      "--parchment": "#efe3c4",
+      "--background": "#020814",
+      "--foreground": "#ffffff",
+      "--primary": "#8ff1a5",
+      "--secondary": "#122a42",
+      "--accent": "#ffd77e",
+      "--highlight": "#95d9ff",
+      "--parchment": "#f5e8ce",
     } as React.CSSProperties
   }
   className="min-h-dvh w-full overflow-x-hidden text-[color:var(--foreground)] bg-cover bg-center bg-no-repeat animate-in fade-in"
@@ -310,40 +277,8 @@ export default function Page() {
 
   {/* rest of your code continues */}
 
-      {/* Spaceship arriving on envelope page only (z-index 10, visible over the new background) */}
-      {!revealed && shipArriving && (
-        <div className="fixed bottom-0 right-0 z-10 pointer-events-none">
-          <div className="relative w-72 sm:w-96 md:w-[500px] h-auto">
-            {/* Platform Image */}
-            <Image
-              src="/4.webp"
-              alt="Platform"
-              width={500}
-              height={400}
-              className="w-full h-auto object-contain"
-              priority
-            />
-            {/* Spaceship on Platform */}
-            <div className="absolute right-[36%] sm:right-[38%] md:right-[40%] lg:right-[41%] bottom-[30%] sm:bottom-[34%] md:bottom-[38%] lg:bottom-[40%] w-36 sm:w-44 md:w-52 lg:w-60 xl:w-64 h-auto ship-arrival-animation">
-              <model-viewer
-                src="/spaceship.glb"
-                autoplay
-                exposure="1.1"
-                shadow-intensity="0.7"
-                loading="lazy"
-                camera-orbit="270deg 60deg 110%"
-                interaction-prompt="none"
-                interaction-prompt-threshold="0"
-                className="w-full h-auto"
-                style={{
-                  filter: "saturate(1.1)",
-                  minHeight: "220px",
-                }}
-              />
-            </div>
-          </div>
-        </div>
-      )}
+      
+      
 
       {/* Content Container - Centered (z-index 20) */}
       <div className="relative z-20 min-h-dvh w-full flex flex-col items-center justify-center px-4 sm:px-6 py-8 sm:py-12">
@@ -364,7 +299,7 @@ export default function Page() {
                   style={{ width: `${progress}%` }}
                 />
               </div>
-              <p className="text-xs sm:text-sm text-[color:var(--foreground)]/80">
+              <p className="text-sm sm:text-base text-[color:var(--foreground)]/90">
                 Loading invitation... {Math.floor(progress)}%
               </p>
             </div>
@@ -383,24 +318,24 @@ export default function Page() {
               {!biometricVerified ? (
                 // NOTE: The background of this specific component (bg-[color:var(--secondary)]/75)
                 // remains translucent, allowing the new full background to show through.
-                <div className="space-y-6 rounded-2xl border border-[color:var(--primary)]/40 bg-[color:var(--secondary)]/75 backdrop-blur-sm p-6 sm:p-8">
+                <div className="space-y-6 rounded-2xl border border-white/30 bg-white/5 backdrop-blur-2xl shadow-[0_0_50px_rgba(255,255,255,0.1),inset_0_1px_0_rgba(255,255,255,0.1)] p-6 sm:p-8">
                   <FingerprintScanner
                     onVerified={() => setBiometricVerified(true)}
                     className="mx-auto"
                   />
                 </div>
               ) : (
-                <div className="text-center space-y-6 animate-in fade-in rounded-2xl border border-[color:var(--primary)]/40 bg-[color:var(--secondary)]/75 backdrop-blur-sm p-6 sm:p-8">
+                <div className="text-center space-y-6 animate-in fade-in rounded-2xl border border-white/30 bg-white/5 backdrop-blur-2xl shadow-[0_0_50px_rgba(255,255,255,0.1),inset_0_1px_0_rgba(255,255,255,0.1)] p-6 sm:p-8">
                   <div className="space-y-4">
                     <h2
-                      className="text-2xl font-bold"
-                      style={{ color: "#d3a826ff", letterSpacing: "2px" }}
+                      className="text-2xl font-bold text-[color:var(--highlight)]"
+                      style={{ letterSpacing: "2px" }}
                     >
                       WELCOME, INNOVATOR!
                     </h2>
                     <p
-                      className="text-sm"
-                      style={{ color: "#d6d9ff", lineHeight: "1.6" }}
+                      className="text-base text-black"
+                      style={{ lineHeight: "1.6" }}
                     >
                       Your identity has been successfully verified.
                       <br />
@@ -425,7 +360,7 @@ hover:scale-105 transition-all duration-300 text-white font-bold px-8 py-3 round
           <div className="w-full max-w-3xl space-y-6 sm:space-y-8">
             <section
               className={cn(
-                "relative rounded-2xl border border-[color:var(--primary)]/40 bg-white/10 backdrop-blur-xl border border-white/20 shadow-[0_0_30px_rgba(0,0,0,0.3)] p-4 sm:p-6 md:p-10 backdrop-blur-sm animate-in fade-in overflow-hidden",
+                "relative rounded-2xl border border-white/30 bg-white/5 backdrop-blur-2xl shadow-[0_0_50px_rgba(255,255,255,0.1),inset_0_1px_0_rgba(255,255,255,0.1)] p-4 sm:p-6 md:p-10 animate-in fade-in overflow-hidden",
               )}
               aria-label="Invitation details"
             >
@@ -439,11 +374,11 @@ hover:scale-105 transition-all duration-300 text-white font-bold px-8 py-3 round
                   priority
                 />
 
-                <p className="viaoda text-center text-sm sm:text-base md:text-lg">
+                <p className="viaoda text-center text-base sm:text-lg md:text-xl text-black">
                   Cordially invites you to
                 </p>
                 <div className="flex flex-col items-center justify-center gap-3">
-  <div className="p-3 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20">
+  <div className="p-3 rounded-2xl bg-white/5 backdrop-blur-2xl border border-white/30 shadow-[0_0_30px_rgba(255,255,255,0.1)]">
     <Image
       src="/images/sb_logo.webp"
       alt="Logo"
@@ -462,41 +397,41 @@ hover:scale-105 transition-all duration-300 text-white font-bold px-8 py-3 round
   />
 </div>
 
-                <h3 className="viaoda text-center text-base sm:text-lg md:text-2xl font-bold text-[color:var(--foreground)]">
+                <h3 className="viaoda text-center text-lg sm:text-xl md:text-3xl font-bold text-black">
                   A National-Level Hackathon
                 </h3>
 
-                <h2 className="viaoda text-center text-base sm:text-lg md:text-2xl font-bold text-[color:var(--foreground)]">
+                <h2 className="viaoda text-center text-lg sm:text-xl md:text-3xl font-bold text-black">
                   Innovating Sustainable Solutions For A Viksit Bharat
                 </h2>
 
-                <p className="viaoda text-center text-xs sm:text-sm md:text-base leading-relaxed">
+                <p className="viaoda text-center text-sm sm:text-base md:text-lg leading-relaxed text-black">
                   You are warmly invited to join Sankalp Bharat 2K26, a
                   student-led hackathon focused on sustainable and impactful
                   innovation.
                 </p>
-                <p className="viaoda text-center text-xs sm:text-sm md:text-base leading-relaxed">
+                <p className="viaoda text-center text-sm sm:text-base md:text-lg leading-relaxed text-black">
                   Organized by the Department of Computer Science and
                   Engineering, Computer Society of India, and Zenith Forum at
                   St. Vincent Pallotti College of Engineering & Technology,
                   Nagpur.
                 </p>
 
-                <div className="viaoda grid gap-1 sm:gap-2 text-center text-xs sm:text-sm md:text-base">
+                <div className="viaoda grid gap-1 sm:gap-2 text-center text-sm sm:text-base md:text-lg text-black">
                   <p>
-                    <span className="viaoda font-semibold text-[color:var(--primary)]">
+                    <span className="viaoda font-semibold text-yellow-500">
                       Date :
                     </span>{" "}
                     17th & 18th April 2026
                   </p>
                   <p>
-                    <span className="viaoda font-semibold text-[color:var(--primary)]">
+                    <span className="viaoda font-semibold text-yellow-500">
                       Time :
                     </span>{" "}
                     9:30 AM onwards
                   </p>
                   <p>
-                    <span className="viaoda font-semibold text-[color:var(--primary)]">
+                    <span className="viaoda font-semibold text-yellow-500">
                       Venue :
                     </span>{" "}
                     Multi-Facility Centre, St. Vincent Pallotti College of
@@ -504,7 +439,7 @@ hover:scale-105 transition-all duration-300 text-white font-bold px-8 py-3 round
                   </p>
                 </div>
 
-                <p className="viaoda text-center text-xs sm:text-sm md:text-base leading-relaxed">
+                <p className="viaoda text-center text-sm sm:text-base md:text-lg leading-relaxed text-black">
                   Your presence will greatly enrich Sankalp Bharat 2K26.
                   <br></br>
                   We look forward to welcoming you.
@@ -512,29 +447,29 @@ hover:scale-105 transition-all duration-300 text-white font-bold px-8 py-3 round
               </div>
             </section>
 
-            <section className="rounded-2xl border border-[color:var(--primary)]/40 bg-white/10 backdrop-blur-xl border border-white/20 shadow-[0_0_30px_rgba(0,0,0,0.3)] p-4 sm:p-6 md:p-10 backdrop-blur-sm">
-              <h4 className="viaoda mb-3 sm:mb-4 text-center text-sm sm:text-base md:text-lg font-semibold text-[color:var(--primary)]">
+            <section className="rounded-2xl border border-white/30 bg-white/5 backdrop-blur-2xl shadow-[0_0_50px_rgba(255,255,255,0.1),inset_0_1px_0_rgba(255,255,255,0.1)] p-4 sm:p-6 md:p-10">
+              <h4 className="viaoda mb-3 sm:mb-4 text-center text-base sm:text-lg md:text-xl font-semibold text-black">
                 Sign Your Presence
               </h4>
               {/* Mobile & iPad (tablets): show signature canvas */}
               <div className="block xl:hidden">
                 <SignatureCanvas
                   ref={sigRef}
-                  className="h-48 sm:h-56 md:h-64 w-full rounded-md bg-[color:var(--secondary)]/30"
+                  className="h-48 sm:h-56 md:h-64 w-full rounded-md bg-[color:var(--secondary)]/80"
                   strokeColor="#ffffff"
                   strokeWidth={0.7}
                 />
                 <div className="viaoda mt-3 sm:mt-4 flex flex-wrap items-center justify-center gap-2 sm:gap-3">
                   <Button
                     onClick={handleDownload}
-                    className="bg-[color:var(--primary)] text-[color:var(--background)] hover:opacity-90 transition text-xs sm:text-sm"
+                    className="bg-green-600 text-white hover:opacity-90 transition text-xs sm:text-sm"
                   >
                     Save
                   </Button>
                   <Button
                     variant="secondary"
                     onClick={handleClear}
-                    className="bg-[color:var(--accent)] text-[oklch(0.98_0_0)] transition text-xs sm:text-sm"
+                    className="bg-[#ae8625] text-white transition text-xs sm:text-sm"
                   >
                     Clear Signatures
                   </Button>
@@ -551,14 +486,14 @@ hover:scale-105 transition-all duration-300 text-white font-bold px-8 py-3 round
                 <div className="viaoda mt-3 sm:mt-4 flex flex-wrap items-center justify-center gap-2 sm:gap-3">
                   <Button
                     onClick={handleDownload}
-                    className="bg-[color:var(--primary)] text-[color:var(--background)] hover:opacity-90 transition text-xs sm:text-sm"
+                    className="bg-green-600 text-white hover:opacity-90 transition text-xs sm:text-sm"
                   >
                     Save
                   </Button>
                   <Button
                     variant="secondary"
                     onClick={handleClear}
-                    className="bg-[color:var(--accent)] text-[oklch(0.98_0_0)] transition text-xs sm:text-sm"
+                    className="bg-[#ae8625] text-white transition text-xs sm:text-sm"
                   >
                     Clear Signature
                   </Button>
@@ -566,7 +501,7 @@ hover:scale-105 transition-all duration-300 text-white font-bold px-8 py-3 round
               </div>
             </section>
 
-            <footer className="viaoda text-center text-xs sm:text-sm">
+            <footer className="viaoda text-center text-sm sm:text-base text-black">
               Crafted for Sankalp Bharat 2K26 — Innovating Solutions for a
               Viksit Bharat<br></br>© Sankalp Bharat 2k26. Made by team - Nikita
               & Swadhin.
